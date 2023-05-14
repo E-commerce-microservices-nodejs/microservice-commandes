@@ -3,6 +3,8 @@ FROM node:16.20-bullseye-slim
 
 # Set environment variables for production
 ENV NODE_ENV=production
+ENV MONGO_URI=mongodb://mongodb-container/microservices
+ENV PORT=5002
 
 # Set the working directory
 WORKDIR /app
@@ -14,16 +16,25 @@ COPY package*.json ./
 RUN npm ci --only=production && \
     npm cache clean --force
 
+
 # Copy the rest of the source code
-COPY --chown=node:node . .
+COPY . .
+
+# Create the build directory and set appropriate permissions
+RUN mkdir -p /app/build && \
+    chown -R node:node /app/build
 
 # Expose the port on which the application listens
-EXPOSE 5000
+EXPOSE 5002
 
 # Use a non-root user for security reasons
 USER node
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["npm","run" ,"start:prod"]
 
+# Specify the microservice-specific labels
 LABEL version="1.0" description="Orders microservice"
+
+
+
