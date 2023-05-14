@@ -1,17 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
-import Commande from "../../models/commande";
-import { CastError, Error } from "mongoose";
+import Order from "../../models/OrderModel";
+import {  Error } from "mongoose";
 
 const router = express.Router();
 
 router.get("/", (req:Request, res:Response) => {
-  Commande.find()
-    .then((commandes) => {
-      if (commandes.length === 0) {
-        res.status(204);
-        res.json({ message: "no commandes exists" });
-      }
-      res.json(commandes);
+  Order.find()
+    .then((orders) => {
+      res.json(orders);
     })
     .catch((error: Error) => {
       res.status(500).json({ error: error.message });
@@ -19,13 +15,13 @@ router.get("/", (req:Request, res:Response) => {
 });
 router.get("/:id",(req: Request, res: Response) => {
 
-  const commandeId = req.params.id;
-  Commande.findById(commandeId).then((commande)=>{
+  const orderId = req.params.id;
+  Order.findById(orderId).then((order)=>{
 
-     if (!commande) {
-      res.status(404).send({ message: `Commande of id ${commandeId} doesn't exist` });
+     if (!order) {
+      res.status(404).send({ message: `Order of id ${orderId} doesn't exist` });
     } else {
-      res.json(commande);
+      res.json(order);
     }
   }).catch((error:any)=>{
     res.status(500).json({ error: error.message });
@@ -37,15 +33,14 @@ router.get("/:id",(req: Request, res: Response) => {
 
    
   
-
 router.post("/", (req: Request, res: Response) => {
-  const newCommande = new Commande({
+  const newOrder = new Order({
    ...req.body
   });
-  newCommande
+  newOrder
     .save()
-    .then((commande) => {
-      res.status(201).json({ message: "Commande added successfully", commande });
+    .then((order) => {
+      res.status(201).json({ message: "Order added successfully", order });
     })
     .catch((error: Error) => {
       res.status(500).json({ error: error.message });
@@ -53,17 +48,17 @@ router.post("/", (req: Request, res: Response) => {
 });
 
 router.put("/:id", (req: Request, res: Response, next:NextFunction) => {
-  Commande.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => Commande.findById(req.params.id))
-    .then((commande) => res.send(commande))
+  Order.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => Order.findById(req.params.id))
+    .then((order) => res.send(order))
     .catch(next);
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
-  Commande.findByIdAndRemove(req.params.id)
+  Order.findByIdAndRemove(req.params.id)
     .then(() => {
       res.status(404);
-      res.send({ message: `commande of id ${req.params.id} was deleted` });
+      res.send({ message: `order of id ${req.params.id} was deleted` });
     })
     .catch((error: Error) => {
       res.status(500);

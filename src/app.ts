@@ -4,7 +4,7 @@ import express from "express";
 // import morgan from 'morgan';
 import dotenv from "dotenv";
 import mongoose, { ConnectOptions } from "mongoose";
-import commandesRouter from "./routes/api/commandesRoutes";
+import ordersRouter from "./routes/api/ordersRoutes";
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 
 // routes
-app.use("/api/commandes", commandesRouter);
+app.use("/api/orders", ordersRouter);
 
 // database connection
 mongoose
