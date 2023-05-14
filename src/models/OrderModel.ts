@@ -1,25 +1,25 @@
 import { Schema, model } from "mongoose";
-import Commande from "../types/Commande";
+import OrderType from "../types/OrderType";
 
-const commandeSchema = new Schema<Commande>({
+const orderSchema = new Schema<OrderType>({
   productId: {
     type: Number,
     required: true
   },
-  dateCommande: {
+  orderDate: {
     type: Date,
     required: true
   },
-  quantite: {
+  quantity: {
     type: Number,
     required: true
   },
-  commandePayee: {
+  orderPayed: {
     type: Boolean,
     required: true
   }
 });
 
-const Commande = model<Commande>('Commande', commandeSchema);
+const Order = model<OrderType>('Order', orderSchema);
 
-export default Commande;
+export default Order;
