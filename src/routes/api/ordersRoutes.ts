@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import Order from "../../models/OrderModel";
 import {  Error } from "mongoose";
+import { error } from "console";
+import OrderType from "../../types/OrderType";
 
 const router = express.Router();
 
@@ -47,11 +49,25 @@ router.post("/", (req: Request, res: Response) => {
     });
 });
 
-router.put("/:id", (req: Request, res: Response, next:NextFunction) => {
-  Order.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => Order.findById(req.params.id))
-    .then((order) => res.send(order))
-    .catch(next);
+router.put("/:id", async(req: Request, res: Response, next:NextFunction) => {
+  const {orderId}=req.body
+ 
+    const orderToPay=await Order.findById(orderId);
+    if(orderToPay){
+      // i was modiyinf here
+       Order.findByIdAndUpdate(orderId, {orderPayed:true})
+      .then(() => Order.findById(req.params.id))
+      .then((order) => res.send(order))
+      .catch(next);
+    }else{
+      throw new Error("order is already paid")
+    }
+
+   
+     
+
+    
+
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
