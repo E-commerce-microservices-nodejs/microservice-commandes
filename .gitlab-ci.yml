@@ -32,12 +32,14 @@ gitops-k8s-deploy:
     - git config --global user.name "Asmae20"
   script:
     - git clone https://gitlab.com/Asmae20/order-microservice.git
-    - sed -i "s/order-microservice:1.0/order-microservice:$TAG/g" order-microservice/file k8s/prder-deployment.yaml
-    - cat order-deployment.yaml
-    - git add order-deployment.yaml
+    - cd order-microservice/file-k8s/
+    - sed -i "s/order-microservice:1.0/order-microservice:$TAG/g" order-deployment.yml
+    - cat order-deployment.yml
+    - git add order-deployment.yml
     - git commit -m "microservice version $TAG"
-    - git remote set-url origin https://Asmae20:$GIT_PASSWORD@gitlab.com/Asmae20/order-microservice-kubernetes.git
+    - git remote set-url origin https://Asmae20:$GIT_PASSWORD@gitlab.com/Asmae20/order-microservice.git
     - git push -uf origin main
+
 
 after_script:
   - docker logout
