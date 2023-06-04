@@ -1,25 +1,26 @@
-import { Schema, model } from "mongoose";
-import OrderType from "../types/OrderType";
+import { Schema, model } from 'mongoose';
+import OrderType from '../types/OrderType';
 
 const orderSchema = new Schema<OrderType>({
   customer: {
     type: String,
-    required: true
+    required: true,
   },
- 
+
   orderDate: {
     type: Date,
     required: false,
-    default:Date.now,},
-  
+    default: Date.now,
+  },
+
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   orderPayed: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const Order = model<OrderType>('Order', orderSchema);
