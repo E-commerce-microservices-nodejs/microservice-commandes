@@ -2,15 +2,17 @@ import { Schema, model } from "mongoose";
 import OrderType from "../types/OrderType";
 
 const orderSchema = new Schema<OrderType>({
-  productId: {
-    type: Number,
+  customer: {
+    type: String,
     required: true
   },
+ 
   orderDate: {
     type: Date,
-    required: true
-  },
-  quantity: {
+    required: false,
+    default:Date.now,},
+  
+  price: {
     type: Number,
     required: true
   },
