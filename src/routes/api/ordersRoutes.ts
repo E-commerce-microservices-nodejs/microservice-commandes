@@ -1,7 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import Order from "../../models/OrderModel";
 import {  Error } from "mongoose";
+<<<<<<< HEAD
 import { error } from "console";
+=======
+>>>>>>> ff692879dc4f41afaba3f990acf71423151527ea
 import OrderType from "../../types/OrderType";
 
 const router = express.Router();
@@ -49,6 +52,7 @@ router.post("/", (req: Request, res: Response) => {
     });
 });
 
+<<<<<<< HEAD
 router.put("/:id", async(req: Request, res: Response, next:NextFunction) => {
   const {orderId}=req.body
  
@@ -68,6 +72,21 @@ router.put("/:id", async(req: Request, res: Response, next:NextFunction) => {
 
     
 
+=======
+router.put("/:orderId", async(req: Request, res: Response, next:NextFunction) => {
+  const {orderId}=req.params
+ 
+    const orderToPay=await Order.findById(orderId);
+    if(orderToPay){
+      // i was modiying here
+       Order.findByIdAndUpdate(orderId, {orderPayed:true})
+      .then(() => Order.findById(orderId))
+      .then((order) => res.send(order).end())
+      
+    }else{
+      throw new Error("order is already paid");
+    }
+>>>>>>> ff692879dc4f41afaba3f990acf71423151527ea
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
